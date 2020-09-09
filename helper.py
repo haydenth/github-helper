@@ -29,6 +29,26 @@ if primary_arg in ('create', 'add'):
   msg = "Created issue %s" % url
   print(msg)
 
+if primary_arg == 'url':
+  issue_id = args[2]
+  issue = repo.get_issue(number=int(issue_id))
+  url = 'https://github.com/%s/issues/%s' % (repo_name, issue.number)
+  msg = "Issue @ %s" % url
+  print(msg)
+
+if primary_arg == 'list':
+  state = args[2]
+  if state:
+    issues = repo.get_issues(assignee=ME, state=state)
+  else:
+    issues = repo.get_issues(assignee=ME)
+  for issue in issues:
+    if state:
+      output = '%s\t%s\t%s' % (issue.number, issue.closed_at, issue.title)
+    else:
+      output = '%s\t%s' % (issue.number, issue.title)
+    print(output)
+
 if primary_arg == 'close':
   issue_id = args[2]
   comment = None
